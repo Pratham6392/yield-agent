@@ -70,6 +70,37 @@ A free shared API key is included in `skill.json`. For production, get your own 
 
 ---
 
+## Schemas
+
+All types and schemas are defined in [`references/openapi.yaml`](references/openapi.yaml), which is the source of truth. The key schemas used throughout the API are:
+
+| Schema | Description |
+|--------|-------------|
+| **TokenDto** | A token on a network — `symbol`, `name`, `decimals`, `network`, `address` |
+| **RewardDto** | A single reward component — `rate` (decimal), `rateType` (APR/APY), `token`, `yieldSource` (staking, lending_interest, vault, etc.) |
+| **RewardRateDto** | Total effective yield — `total` rate + `components[]` (array of `RewardDto`) |
+| **YieldStatisticsDto** | Protocol analytics — `tvlUsd`, `tvl`, `uniqueUsers`, `averagePositionSizeUsd` |
+| **YieldRiskDto** | Risk scoring from Exponential and Credora providers |
+| **YieldStatusDto** | Current availability — whether enter, exit, or claim actions are enabled |
+| **YieldMetadataDto** | Descriptive info — name, logo, description, documentation URLs |
+| **ArgumentFieldDto** | A single action argument field — `name`, `type` (string/number/address/enum/boolean), `required`, `options`, `optionsRef`, `minimum`, `maximum`, `isArray` |
+| **ArgumentSchemaDto** | A collection of `ArgumentFieldDto` fields for an action, with optional notes |
+| **YieldMechanicsDto** | Operational config — `arguments` (enter/exit/manage schemas), `fees`, `entryLimits`, `validators` |
+| **YieldDto** | Complete yield opportunity — `id`, `network`, `inputTokens`, `token`, `rewardRate`, `statistics`, `risk`, `status`, `metadata`, `mechanics`, `providerId`, `state` |
+| **BalanceType** | Enum of balance states: `active`, `entering`, `exiting`, `withdrawable`, `claimable`, `locked` |
+| **PendingActionDto** | An action available on a balance — `type`, `passthrough`, `arguments` schema, `amount` |
+| **BalanceDto** | User balance for a yield — `address`, `type` (BalanceType), `amount`, `token`, `pendingActions[]`, `validator`, `isEarning` |
+| **YieldBalancesDto** | All balances for a yield — `yieldId`, `balances[]`, `outputTokenBalance` |
+| **TransactionDto** | A single transaction — `id`, `status` (CREATED → CONFIRMED/FAILED), `type` (STAKE/APPROVAL/etc.), `unsignedTransaction`, `stepIndex` |
+| **ActionDto** | Result of enter/exit/manage — `id`, `intent`, `type`, `yieldId`, `address`, `amount`, `transactions[]`, `executionPattern`, `status` |
+| **CreateActionDto** | Request body for enter/exit — `yieldId`, `address`, `arguments` |
+| **CreateManageActionDto** | Request body for manage — `yieldId`, `address`, `action`, `passthrough`, `arguments` |
+| **SubmitHashDto** | Submitted after broadcasting — `{ "hash": "0x..." }` |
+| **ValidatorDto** | Validator details for staking yields — `address`, `name`, `status`, `commission`, `votingPower` |
+| **PaginatedResponseDto** | Paginated list wrapper — `total`, `offset`, `limit`, `items[]` |
+
+---
+
 ## Project Structure
 
 ```
